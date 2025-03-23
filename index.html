@@ -122,9 +122,11 @@
         let questionDiv = document.createElement('div');
         questionDiv.className = 'question';
         questionDiv.innerHTML = `
-            <p>${questionText}</p>
-            <div class="buttons">
+            <div class="question" id="question-${currentQuestion}">
+              <p>${questionText}</p>
+              <div class="buttons">
                 ${options.map(option => `<button class="answer" onclick="nextQuestion('${option.toLowerCase()}')">${option}</button>`).join('')}
+              </div>
             </div>
         `;
         
