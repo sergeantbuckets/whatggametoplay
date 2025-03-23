@@ -63,10 +63,11 @@
         <div class="question" id="question-1">
             <p>What genre do you prefer?</p>
             <div class="buttons">
-                <button onclick="nextQuestion('action')">Action</button>
-                <button onclick="nextQuestion('adventure')">Adventure</button>
-                <button onclick="nextQuestion('rpg')">RPG</button>
-                <button onclick="nextQuestion('strategy')">Strategy</button>
+                <button class="answer" onclick="nextQuestion('action')">Action</button>
+                <button class="answer" onclick="nextQuestion('adventure')">Adventure</button>
+                <button class="answer" onclick="nextQuestion('rpg')">RPG</button>
+                <button class="answer" onclick="nextQuestion('strategy')">Strategy</button>
+                <button class="answer" onclick="nextQuestion('fps')">FPS (First-Person Shooter)</button> <!-- Added FPS option -->
             </div>
         </div>
     </div>
@@ -117,7 +118,7 @@
         questionDiv.innerHTML = `
             <p>${questionText}</p>
             <div class="buttons">
-                ${options.map(option => `<button onclick="nextQuestion('${option.toLowerCase()}')">${option}</button>`).join('')}
+                ${options.map(option => `<button class="answer" onclick="nextQuestion('${option.toLowerCase()}')">${option}</button>`).join('')}
             </div>
         `;
         
@@ -148,6 +149,8 @@
             return 'You might enjoy The Witcher 3: Wild Hunt! A fantastic single-player RPG.';
         } else if (genre === 'strategy' && difficulty === 'Medium') {
             return 'You might enjoy Civilization VI, a fun and strategic game to plan and conquer.';
+        } else if (genre === 'fps' && combat === 'Combat') { // New condition for FPS
+            return 'You might enjoy Call of Duty: Modern Warfare. A fast-paced FPS game with intense action!';
         } else {
             return 'We have plenty of great games for you, but we need more info to find the best one!';
         }
@@ -156,3 +159,4 @@
 
 </body>
 </html>
+
