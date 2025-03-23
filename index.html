@@ -87,7 +87,7 @@
         answers.push(answer); // Save the user's answer
         
         // Hide current question
-        document.getElementById(`question-1`).style.display = 'none';
+        document.getElementById(`question-${currentQuestion}`).style.display = 'none';
         
         // Increment question counter
         currentQuestion++;
