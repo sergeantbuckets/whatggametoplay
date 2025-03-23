@@ -67,7 +67,7 @@
                 <button class="answer" onclick="nextQuestion('adventure')">Adventure</button>
                 <button class="answer" onclick="nextQuestion('rpg')">RPG</button>
                 <button class="answer" onclick="nextQuestion('strategy')">Strategy</button>
-                <button class="answer" onclick="nextQuestion('fps')">FPS (First-Person Shooter)</button> <!-- Added FPS option -->
+                <button class="answer" onclick="nextQuestion('fps')">FPS (First-Person Shooter)</button>
             </div>
         </div>
     </div>
@@ -82,17 +82,17 @@
     let answers = []; // Store user responses
     let currentQuestion = 1; // Track current question number
 
-    // Function to show the next question based on the answer
+    // Function to handle the button click and move to the next question
     function nextQuestion(answer) {
-        answers.push(answer);
-
+        answers.push(answer); // Save the user's answer
+        
         // Hide current question
         document.getElementById(`question-${currentQuestion}`).style.display = 'none';
         
         // Increment question counter
         currentQuestion++;
 
-        // Load next question based on current question number
+        // Load the next question based on current question number
         loadNextQuestion();
     }
 
@@ -107,6 +107,12 @@
         } else if (currentQuestion === 5) {
             showQuestion("Do you like open-world games?", ['Yes', 'No'], 'open-world');
         } else if (currentQuestion === 6) {
+            showQuestion("Do you prefer story-driven games?", ['Yes', 'No'], 'story-driven');
+        } else if (currentQuestion === 7) {
+            showQuestion("How much time do you have to play?", ['Short sessions', 'Long sessions'], 'time');
+        } else if (currentQuestion === 8) {
+            showQuestion("Do you enjoy games with a lot of action?", ['Yes', 'No'], 'action-preference');
+        } else if (currentQuestion === 9) {
             showRecommendation();
         }
     }
@@ -140,17 +146,22 @@
         let combat = answers[2];
         let difficulty = answers[3];
         let openWorld = answers[4];
+        let storyDriven = answers[5];
+        let time = answers[6];
+        let actionPreference = answers[7];
 
-        if (genre === 'action' && combat === 'Combat' && difficulty === 'Hard') {
+        if (genre === 'action' && combat === 'Combat' && difficulty === 'Hard' && actionPreference === 'Yes') {
             return 'You might enjoy Dark Souls! A challenging action game with great combat.';
-        } else if (genre === 'adventure' && openWorld === 'Yes') {
+        } else if (genre === 'adventure' && openWorld === 'Yes' && storyDriven === 'Yes') {
             return 'You might enjoy The Legend of Zelda: Breath of the Wild. An open-world adventure game!';
-        } else if (genre === 'rpg' && gameplay === 'Single-player') {
-            return 'You might enjoy The Witcher 3: Wild Hunt! A fantastic single-player RPG.';
-        } else if (genre === 'strategy' && difficulty === 'Medium') {
+        } else if (genre === 'rpg' && gameplay === 'Single-player' && storyDriven === 'Yes') {
+            return 'You might enjoy The Witcher 3: Wild Hunt! A fantastic story-driven RPG.';
+        } else if (genre === 'strategy' && difficulty === 'Medium' && time === 'Long sessions') {
             return 'You might enjoy Civilization VI, a fun and strategic game to plan and conquer.';
-        } else if (genre === 'fps' && combat === 'Combat') { // New condition for FPS
+        } else if (genre === 'fps' && combat === 'Combat' && time === 'Short sessions') {
             return 'You might enjoy Call of Duty: Modern Warfare. A fast-paced FPS game with intense action!';
+        } else if (time === 'Short sessions' && difficulty === 'Easy') {
+            return 'You might enjoy Stardew Valley! A relaxing and easy game with short play sessions.';
         } else {
             return 'We have plenty of great games for you, but we need more info to find the best one!';
         }
@@ -159,4 +170,5 @@
 
 </body>
 </html>
+
 
