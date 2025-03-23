@@ -5,40 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Recommendation Quiz</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
-        .quiz-container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
-        .hidden { display: none; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 20px;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        button {
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            display: none;
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <h2>Find Your Perfect Game!</h2>
-        <div id="quiz">
+
+<div class="quiz-container">
+    <h2>Find Your Perfect Game!</h2>
+    <div id="quiz">
+        <!-- Question 1 -->
+        <div class="question" id="question-1">
             <p>What genre do you prefer?</p>
-            <button onclick="selectAnswer('action')">Action</button>
-            <button onclick="selectAnswer('adventure')">Adventure</button>
-            <button onclick="selectAnswer('rpg')">RPG</button>
-        </div>
-        <div id="result" class="hidden">
-            <h3>We recommend:</h3>
-            <p id="game"></p>
+            <div class="buttons">
+                <button onclick="nextQuestion('action')">Action</button>
+                <button onclick="nextQuestion('adventure')">Adventure</button>
+                <button onclick="nextQuestion('rpg')">RPG</button>
+                <button onclick="nextQuestion('strategy')">Strategy</button>
+            </div>
         </div>
     </div>
-    
-    <script>
-        function selectAnswer(choice) {
-            let game;
-            if (choice === 'action') {
-                game = "Call of Duty";
-            } else if (choice === 'adventure') {
-                game = "The Legend of Zelda";
-            } else if (choice === 'rpg') {
-                game = "Final Fantasy";
-            }
-            document.getElementById("game").innerText = game;
-            document.getElementById("quiz").classList.add("hidden");
-            document.getElementById("result").classList.remove("hidden");
+
+    <div id="result">
+        <h3>We recommend:</h3>
+        <p id="game">Loading...</p>
+    </div>
+</div>
+
+<script>
+    let answers = []; // Store user responses
+    let currentQuestion = 1; // Track current question number
+
+    // Function to show the next question based on the answer
+    function nextQuestion(answer) {
+        answers.push(answer);
+
+        // Hide current question
+        document.getElementById(`question-${currentQuestion}`).style.display = 'none';
+        
+        // Increment question counter
+        currentQuestion++;
+
+        // Load next question based on current question number
+        loadNextQuestion();
+    }
+
+    // Function to load the next question
+    function loadNextQuestion() {
+        if (currentQuestion === 2) {
+            showQuestion("What type of gameplay do you prefer?", ['Single-player', 'Multiplayer'], 'gameplay');
+        } else if (currentQuestion === 3) {
+            showQuestion("Do you enjoy puzzles or combat?", ['Puzzles', 'Combat'], 'combat');
+        } else if (currentQuestion === 4) {
+            showQuestion("What difficulty do you prefer?", ['Easy', 'Medium', 'Hard'], 'difficulty');
+        } else if (currentQuestion === 5) {
+            showQuestion("Do you like open-world games?", ['Yes', 'No'], 'open-world');
+        } else if (currentQuestion === 6) {
+            showRecommendation();
         }
-    </script>
+    }
+
+    // Function to show a question
+    function showQuestion(questionText, options, nextStep) {
+        let questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = `
+            <p>${questionText}</p>
+            <div class="buttons">
+                ${options.map(option => `<button onclick="nextQuestion('${option.toLowerCase()}')">${option}</button>`).join('')}
+            </div>
+        `;
+        
+        // Append the new question
+        document.getElementById('quiz').appendChild(questionDiv);
+    }
+
+    // Function to show game recommendations based on answers
+    function showRecommendation() {
+        let gameRecommendation = getRecommendation(answers);
+        document.getElementById('game').textContent = gameRecommendation;
+        document.getElementById('result').style.display = 'block';
+    }
+
+    // Function to determine the game recommendation based on answers
+    function getRecommendation(answers) {
+        let genre = answers[0];
+        let gameplay = answers[1];
+        let combat = answers[2];
+        let difficulty = answers[3];
+        let openWorld = answers[4];
+
+        if (genre === 'action' && combat === 'Combat' && difficulty === 'Hard') {
+            return 'You might enjoy Dark Souls! A challenging action game with great combat.';
+        } else if (genre === 'adventure' && openWorld === 'Yes') {
+            return 'You might enjoy The Legend of Zelda: Breath of the Wild. An open-world adventure game!';
+        } else if (genre === 'rpg' && gameplay === 'Single-player') {
+            return 'You might enjoy The Witcher 3: Wild Hunt! A fantastic single-player RPG.';
+        } else if (genre === 'strategy' && difficulty === 'Medium') {
+            return 'You might enjoy Civilization VI, a fun and strategic game to plan and conquer.';
+        } else {
+            return 'We have plenty of great games for you, but we need more info to find the best one!';
+        }
+    }
+</script>
+
 </body>
 </html>
